@@ -1,0 +1,57 @@
+h1,h3{
+    text-align: center;
+
+}
+#author_list,#tweets{
+    background-color: #e1effa;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border: deepskyblue;
+}
+
+
+
+thead tr th{
+    font-size: x-large;
+    width: 35%;
+}
+
+button{
+    text-align: center;
+    width: 50%;
+}
+
+#tweeter_info{
+    text-align: center;
+
+}
+
+.tweet_box{
+    padding: 1%;
+    margin: 5%;
+    border: solid deepskyblue 2px;
+    width: 40%;
+    display: inline-block;
+    background-color: #a5d1f3;
+
+}
+
+.titles{
+    font-size: large;
+    color: #3072a4;
+}
+.tweetbox_left{
+    width: 70%;
+    vertical-align: top;
+}
+.tweetbox_right{
+    width: 20%;
+    vertical-align: top;
+}
+
+img{
+    alignment: top;
+    width: 100%;
+}
