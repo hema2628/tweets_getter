@@ -66,7 +66,16 @@ function search_tweets(value){
 }
 
 function creat_author_list(data){
-
+    author_list_show = ""
+    author_list_hidden = ""
+    more = "<li class=\"dropdown\">\n" +
+        "                <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n" +
+        "                    more <b class=\"caret\"></b>\n" +
+        "                </a>\n" +
+        "                <ul class=\"dropdown-menu\" id=\"dropdown_menu\">\n" +
+        "\n" +
+        "                </ul>\n" +
+        "            </li>"
 
     var allRows = data.toString().split(/\r?\n|\r/);
     allRows = allRows[0].split(",");
@@ -75,13 +84,17 @@ function creat_author_list(data){
         var rowCells = allRows[singleRow];
 
         if(singleRow<=3){
-
-            $("#author_bar").prepend("<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>")
+            author_list_show+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>";
+            // $("#author_bar").prepend("<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>")
         }else{
-            document.getElementById("dropdown_menu").innerHTML+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>"
+            author_list_hidden+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>";
+            // document.getElementById("dropdown_menu").innerHTML+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>"
         }
 
         }
+
+    author_list.innerHTML = author_list_show+more;
+    document.getElementById("dropdown_menu").innerHTML+=author_list_hidden
 
 }
 
