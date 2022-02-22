@@ -10,7 +10,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
-from tweetapi.tweet_connecter.databaseMethods import DBMethods_authorinfo
+from databaseMethods import DBMethods_authorinfo
 
 eel.init('web')
 
