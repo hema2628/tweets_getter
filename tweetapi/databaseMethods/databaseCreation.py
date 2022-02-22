@@ -9,6 +9,7 @@ sys.path.append(BASE_DIR)
 import authors
 import keys
 import time
+from googletrans import Translator
 
 myclient = pymongo.MongoClient('mongodb://localhost:27017/')
 
@@ -70,11 +71,13 @@ def insert_new(authorname):
     # get new timeline and see whether each tweets is already in thedatabase
     # put the new tweet in the database
     new_tweets = tweet_getter_by_Id(authorname)
+    new_tweets.reverse()
     for i in new_tweets:
 
-
-
         if i["id_str"] not in tweets_id_list:
+            # i["text"] = text_translator(i["text"])
+            # i["profit"] = 0
+            # i["loss"] = 0
             insert_one(authorname,i)
             print("new tweet inserted: ")
             print("tweeter: "+i["user"]["screen_name"])
@@ -91,6 +94,13 @@ def check_newtweets_and_insert(authorlist):
 
         insert_new(i)
         print("...check finished...")
+
+def text_translator(text):
+    translator = Translator(service_urls=[
+        'translate.google.com',])# 如果可以上外网，还可添加 'translate.google.com' 等
+    trans=translator.translate(text, src='en', dest='zh-cn')
+
+    return trans.text
 
 times = 0
 while True:
