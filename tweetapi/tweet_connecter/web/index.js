@@ -3,21 +3,13 @@ window.onload = function (){
 
     author_list = document.getElementById("author_bar");
     tweets_field = document.getElementById("tweets_list");
+    author_cards = document.getElementById("main_page")
+
     authors = []
 
-    // $.ajax({
-    //     url: '../../tweet_connecter/web/tweeter.csv',
-    //     dataType: 'text',
-    //   }).done(successFunction);
-    //
-    // function successFunction(data){
-    //     console.log(data)
-    //     data = eel.get_IDlist("tweeter.csv")
-    //     creat_author_list(data);
-    //     tweets_field.innerHTML = "<h3>No tweets shown here</h3>";
-    // }
 
-    eel.get_IDlist("web/tweeter.csv")
+
+    eel.get_IDlist()
 
 
 
@@ -26,9 +18,11 @@ window.onload = function (){
 
 eel.expose(init_page)
 function init_page(message){
-
-
+    author_cards.style.display = "";
+    tweets_field.style.display = "none";
     creat_author_list(message)
+    create_cards_list(message)
+
 }
 
 function getJsonObject(path, success, error) {
@@ -66,51 +60,78 @@ function search_tweets(value){
 }
 
 function creat_author_list(data){
-    author_list_show = ""
-    author_list_hidden = ""
-    more = "<li class=\"dropdown\">\n" +
-        "                <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n" +
-        "                    more <b class=\"caret\"></b>\n" +
-        "                </a>\n" +
-        "                <ul class=\"dropdown-menu\" id=\"dropdown_menu\">\n" +
-        "\n" +
-        "                </ul>\n" +
-        "            </li>"
+    var main_button = "<div class=\"navbar-header\">\n" +
+        "        <a id=\"main_button\" class=\"navbar-brand\" onclick='eel.get_IDlist()' href=\"#\">Tweets4U</a>\n" +
+        "    </div>"
 
-    var allRows = data.toString().split(/\r?\n|\r/);
-    allRows = allRows[0].split(",");
+    var authors_on_bar = ""
+    var author_hidden = ""
+    var more = '<li class="dropdown">\n' +
+        '                <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n' +
+        '                    more <b class="caret"></b>\n' +
+        '                </a>\n' +
+        '                <ul class="dropdown-menu" id="dropdown_menu">\n' +
+        '\n' +
+        '                </ul>\n' +
+        '            </li>'
 
-    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
-        var rowCells = allRows[singleRow];
+
+
+    for (var singleRow = 0; singleRow < data.length; singleRow++) {
+        var rowCells = data[singleRow];
 
         if(singleRow<=3){
-            author_list_show+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>";
-            // $("#author_bar").prepend("<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>")
+            authors_on_bar+="<li><a id='"+rowCells["screen_name"].toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells["screen_name"]+"</a></li>"
         }else{
-            author_list_hidden+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>";
-            // document.getElementById("dropdown_menu").innerHTML+="<li><a id='"+rowCells.toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells+"</a></li>"
-        }
+            author_hidden+="<li><a id='"+rowCells["screen_name"].toString()+"' onclick='search_tweets(this.id)' href='#'>"+rowCells["screen_name"]+"</a></li>"
 
         }
 
-    author_list.innerHTML = author_list_show+more;
-    document.getElementById("dropdown_menu").innerHTML+=author_list_hidden
+
+        }
+
+    author_list.innerHTML = main_button + authors_on_bar+more;
+    document.getElementById("dropdown_menu").innerHTML=author_hidden;
+
 
 }
+
+function create_cards_list(data){
+    cards = ""
+    for (var singleRow = 0; singleRow < data.length; singleRow++) {
+        var rowCells = data[singleRow];
+        cards+="<div class=\"card\" >\n" +
+            "        <img class=\"card-img-top\" src=\""+rowCells.profile_image_url+"\" alt=\"Card image\">\n" +
+            "        <div class=\"card-body\">\n" +
+            "            <h4 class=\"card-title\">"+rowCells.screen_name+"</h4>\n" +
+            "            <p class=\"card-text\">"+rowCells.description+"</p>\n" +
+            "            <a name='"+rowCells["screen_name"]+"' onclick='search_tweets(this.name)' href=\"#\" class=\"btn btn-primary\">View Tweets</a>\n" +
+            "        </div>\n" +
+            "    </div>"
+    }
+
+    author_cards.innerHTML = cards;
+}
+
 
 eel.expose(creat_tweet_list)
 function creat_tweet_list(data){
     // var tweetsOBJ = data.split(/\r?\n|\r/).slice(1,);
-    var tweetsOBJ = data
+    author_cards.style.display = "none";
+    tweets_field.style.display = "";
+    var tweetsOBJ = data["tweets"]
+    var authorOBJ = data["author"]
+    var author_twt_page ="https://twitter.com/"+authorOBJ.screen_name
     console.log(tweetsOBJ)
-    author_name = tweetsOBJ[0].user.name
-    author_id = tweetsOBJ[0].user.screen_name
-    tweeter_author_id = tweetsOBJ[0].user.id;
+    author_name = authorOBJ.screen_name
+    author_des = authorOBJ.description;
 
     tweets = ""
-    tweets += "<div id=\"tweeter_info\"><p id=\"author_name\">Tweeter: "+author_name+"</p>\n" +
-        "    <p id=\"author_id\">Author id: "+author_id+"</p>"+
-        "    <p id=\"tweet_author_id\">Tweet author id: "+tweeter_author_id+"</p></div>"
+    tweets += "       <div class=\"tweeter_info\">" +
+        "       <img class=\"author_pil\" src=\""+authorOBJ.profile_image_url+"\" alt=\"Card image\">\n" +
+        "       <p class=\"author_name\"><a href=\""+author_twt_page+"\">"+author_name+"</a></p>\n" +
+        "       <p class=\"author_des\">"+author_des+"</p></div>";
+
 
     for (var i = 0; i<tweetsOBJ.length; i++){
 
@@ -132,7 +153,7 @@ function creat_tweet_box(tweet_info){
         link = tweet_info.entities.media[0].url
     }else{
         img_url = tweet_info.user.profile_image_url
-        link = "https://twitter.com/"+tweet_info.user.screen_name
+        link = "https://twitter.com/"+tweet_info.user.screen_name+"/status/"+tweet_info.id_str
     }
 
 
@@ -140,10 +161,9 @@ function creat_tweet_box(tweet_info){
     tweet_box = "<div class=\"tweet_box\">\n" +
         "            <div style=\"display: inline-block\" class=\"tweetbox_left\">"+
         "            <div id=\"tweet_text\"><b class=\"titles\"></b><br>"+ tweet_info.text+"</div>\n" +
-        "            <div id=\"authorname\"><b class=\"titles\">By: </b> "+ author_name+"</div>\n" +
         "            <div id=\"created_at\"><b class=\"titles\">Created time: </b> "+ date+"</div></div>\n" +
         "            <div style=\"display: inline-block\" class=\"tweetbox_right\">" +
-        "            <img src=\""+img_url+"\" alt=\"\">" +
+        "            <img class=\"tweet_img\" src=\""+img_url+"\" alt=\"\">" +
         "            <a href=\""+link+"\"> click to view details >>></a>"+
         "            </div>"+
         "        </div>"
