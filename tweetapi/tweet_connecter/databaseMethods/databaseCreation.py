@@ -75,9 +75,9 @@ def insert_new(authorname):
     for i in new_tweets:
 
         if i["id_str"] not in tweets_id_list:
-            # i["text"] = text_translator(i["text"])
-            # i["profit"] = 0
-            # i["loss"] = 0
+            i["text"] = text_translator(i["text"])
+            i["profit"] = 0
+            i["loss"] = 0
             insert_one(authorname,i)
             print("new tweet inserted: ")
             print("tweeter: "+i["user"]["screen_name"])
