@@ -2,15 +2,62 @@ h1,h3{
     text-align: center;
 
 }
-#author_list,#tweets{
-    background-color: #e1effa;
+#tweets{
+    background-color: #fbfcfd;
     margin-left: 50px;
     margin-right: 50px;
     margin-top: 50px;
     margin-bottom: 50px;
-    border: deepskyblue;
+    padding-top: 2%;
+
 }
 
+#main_page{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+
+}
+
+.card{
+    padding: 1%;
+    width: 15%;
+    height: auto;
+    margin: 2%;
+    border: solid #8daab4 2px;
+    background: #f9fdff;
+    display: inline-block;
+}
+.card-img-top{
+    width: 100%;
+}
+
+.card-body{
+    padding: 5%;
+    height: 30%;
+
+}
+
+.card-title,.author_name{
+    font-family: Stencil Std, fantasy;
+}
+
+.card-text{
+    height: 60px;
+    overflow: hidden;
+    /*将对象作为弹性伸缩盒子模型显示*/
+    display: -webkit-box;
+    /*设置子元素排列方式*/
+    -webkit-box-orient: vertical;
+    /*设置显示的行数，多出的部分会显示为...*/
+    -webkit-line-clamp: 3;
+}
+
+
+.btn{
+    bottom: 0;
+}
 
 
 thead tr th{
@@ -23,18 +70,20 @@ button{
     width: 50%;
 }
 
-#tweeter_info{
+.tweeter_info{
     text-align: center;
-
 }
 
 .tweet_box{
     padding: 1%;
-    margin: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     border: solid deepskyblue 2px;
     width: 40%;
     display: inline-block;
-    background-color: #a5d1f3;
+    background-color: #deeefa;
 
 }
 
@@ -51,7 +100,19 @@ button{
     vertical-align: top;
 }
 
-img{
+.tweet_img{
     alignment: top;
     width: 100%;
+}
+.author_pil{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}
+
+.author_pil,.author_name,.author_des{
+    padding: 1%;
+}
+.author_name{
+    font-size: 20px;
 }
