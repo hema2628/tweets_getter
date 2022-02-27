@@ -11,7 +11,7 @@ import keys
 import time
 from googletrans import Translator
 
-myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+myclient = pymongo.MongoClient('mongodb://tweetapi:tweetapi@127.0.0.1:27017/admin')
 
 dblist = myclient.list_database_names()
 mydb = myclient["tweets"]
@@ -53,12 +53,19 @@ def insert_many(authorname,infolist):
     target_Col.insert_many(infolist)
 
 def tweet_getter_by_Id(id):
-    public_tweets = api.user_timeline(screen_name=id)
-    json_list = []
-    for tweet in public_tweets:
-        json_list.append(tweet)
+    try:
+        public_tweets = api.user_timeline(screen_name=id)
+        json_list = []
+        for tweet in public_tweets:
+            json_list.append(tweet)
+        return json_list
+    except:
+        print("Unauthorized attempt")
+        pass
 
-    return json_list
+    return []
+
+
 
 def insert_new(authorname):
     target_col = mydb[authorname]
@@ -95,19 +102,33 @@ def check_newtweets_and_insert(authorlist):
         insert_new(i)
         print("...check finished...")
 
+def update_profit_loss(tweetid,tweeter_name,PL):
+
+    db = mydb[str(tweeter_name)]
+    print(tweetid,tweeter_name,PL)
+    db.update_one({'id_str': tweetid}, {'$inc': {PL: 1}})
+
 def text_translator(text):
-    translator = Translator(service_urls=[
+    try:
+        translator = Translator(service_urls=[
         'translate.google.com',])# 如果可以上外网，还可添加 'translate.google.com' 等
-    trans=translator.translate(text, src='en', dest='zh-cn')
+        trans=translator.translate(text, src='en', dest='zh-cn')
 
-    return trans.text
+        return trans.text
+    except:
+        print("text cannot be translated")
+        pass
+        return ""
 
-times = 0
-while True:
 
-    print("begin checking for the "+str(times)+ " time ......")
-    print("start time: "+str(datetime.datetime.now()))
-    check_newtweets_and_insert(get_authors())
-    print("finish time: "+str(datetime.datetime.now()))
-    time.sleep(300)
-    times+=1
+if __name__ == "__main__":
+
+    times = 0
+    while True:
+
+        print("begin checking for the "+str(times)+ " time ......")
+        print("start time: "+str(datetime.datetime.now()))
+        check_newtweets_and_insert(get_authors())
+        print("finish time: "+str(datetime.datetime.now()))
+        time.sleep(300)
+        times+=1
