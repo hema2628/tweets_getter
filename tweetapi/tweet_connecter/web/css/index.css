@@ -104,6 +104,21 @@ button{
     alignment: top;
     width: 100%;
 }
+
+.box_bottom_bar{
+    margin-top: 3%;
+}
+
+.icons{
+    margin-left: 5%;
+    margin-right: 5%;
+    display: inline-block;
+}
+
+.fa-hand-o-up:hover{
+    content: attr(tittle);
+}
+
 .author_pil{
     border-radius: 50%;
     width: 200px;
