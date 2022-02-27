@@ -40,8 +40,9 @@ function getJsonObject(path, success, error) {
     xhr.send();
 }
 
+eel.expose(search_tweets)
 function search_tweets(value){
-    console.log(value)
+
 
     // values = value.split(',');
     // author_name = values[0];
@@ -122,7 +123,7 @@ function creat_tweet_list(data){
     var tweetsOBJ = data["tweets"]
     var authorOBJ = data["author"]
     var author_twt_page ="https://twitter.com/"+authorOBJ.screen_name
-    console.log(tweetsOBJ)
+
     author_name = authorOBJ.screen_name
     author_des = authorOBJ.description;
 
@@ -155,6 +156,35 @@ function creat_tweet_box(tweet_info){
         img_url = tweet_info.user.profile_image_url
         link = "https://twitter.com/"+tweet_info.user.screen_name+"/status/"+tweet_info.id_str
     }
+    profit = "profit"
+    loss = "loss"
+    tweeter_name = tweet_info.user.screen_name
+    tweet_id = tweet_info.id_str
+    info_list = [tweeter_name,tweet_id.toString()]
+
+
+
+    bottom_bar = "<div class=\"box_bottom_bar\">\n" +
+        "        <div class=\"icons\">\n" +
+        "            <a href=\"#\" title='"+tweet_id+","+tweeter_name+","+profit+"' onclick=\"eel.update_profit_loss(this.title)\">\n" +
+        "                <i class=\"fa fa-hand-o-up\" title=\"利好\" style=\"font-size:24px\"></i>\n" +
+        "            </a>"+tweet_info.profit+"\n" +
+        "        </div>\n" +
+        "        \n" +
+        "        <div class=\"icons\">\n" +
+        "            <a href=\"#\" title='"+tweet_id+","+tweeter_name+","+loss+"' onclick=\"eel.update_profit_loss(this.title)\">\n" +
+        "                <i class=\"fa fa-hand-o-down\" title=\"利空\" style=\"font-size:24px\"></i>\n" +
+        "            </a>"+tweet_info.loss+"\n" +
+        "        </div>\n" +
+        "\n" +
+        "        <div class=\"icons\">\n" +
+        "            <a href=\"#\" onclick=\"alert(361)\">\n" +
+        "                <i class=\"fa fa-external-link\" title=\"转发分享\" style=\"font-size:24px\"></i>\n" +
+        "            </a>分享\n" +
+        "        </div>\n" +
+        "\n" +
+        "\n" +
+        "    </div>"
 
 
 
@@ -166,7 +196,10 @@ function creat_tweet_box(tweet_info){
         "            <img class=\"tweet_img\" src=\""+img_url+"\" alt=\"\">" +
         "            <a href=\""+link+"\"> click to view details >>></a>"+
         "            </div>"+
+        bottom_bar+
         "        </div>"
 
     return tweet_box
 }
+
+
