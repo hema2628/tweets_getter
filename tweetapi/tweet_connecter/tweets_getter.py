@@ -10,7 +10,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
-from databaseMethods import DBMethods_authorinfo
+from databaseMethods import DBMethods_authorinfo, databaseCreation
 
 eel.init('web')
 
@@ -69,6 +69,15 @@ def tweet_getter_by_Id(id):
 
     return json_list
 
+@eel.expose
+def update_profit_loss(info):
+
+    info_list = info.split(",")
+    tweetid = info_list[0]
+    tweeter_name = info_list[1]
+    PL = info_list[2]
+    databaseCreation.update_profit_loss(tweetid=tweetid,tweeter_name = tweeter_name,PL=PL)
+    eel.search_tweets(tweeter_name)
 
 
 def keywords_distributor(tweetfile):
