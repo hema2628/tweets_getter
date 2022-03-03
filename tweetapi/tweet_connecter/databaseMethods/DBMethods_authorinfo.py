@@ -3,18 +3,20 @@ import pymongo
 import tweepy
 import os
 import sys
+import authors
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 print(BASE_DIR)
 
 import keys
-import time
+import authors
 
 myclient = pymongo.MongoClient('mongodb://localhost:27017/')
 
 dblist = myclient.list_database_names()
 mydb = myclient["tweeters_info"]
 tweetersinfo = mydb["tweeters_info"]
+
 
 consumer_key = keys.API_key
 consumer_secret = keys.API_key_secret
@@ -53,3 +55,18 @@ def get_author_by_id(id):
     return tweeter
 
 
+database_authors = []
+for i in get_authors_from_database():
+    database_authors.append(i["screen_name"])
+print(database_authors)
+
+for i in authors.Authors:
+    if i.value in database_authors:
+        print("tweeter already in database")
+    else:
+        try:
+            info = api.get_user(screen_name = i.value)
+            print(info)
+            tweetersinfo.insert_one(info)
+        except:
+            print("get account error!")
