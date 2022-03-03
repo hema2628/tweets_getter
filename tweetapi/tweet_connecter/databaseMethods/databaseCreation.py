@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import pymongo
 import tweepy
@@ -11,7 +12,7 @@ import keys
 import time
 from googletrans import Translator
 
-myclient = pymongo.MongoClient('mongodb://tweetapi:tweetapi@127.0.0.1:27017/admin')
+myclient = pymongo.MongoClient('mongodb://localhost:27017/')
 
 dblist = myclient.list_database_names()
 mydb = myclient["tweets"]
@@ -83,12 +84,11 @@ def insert_new(authorname):
 
         if i["id_str"] not in tweets_id_list:
             i["text_CN"] = text_translator(i["text"])
-            i["profit"] = 0
-            i["loss"] = 0
+            i["profit"] = random.randint(0,100)
+            i["loss"] = random.randint(0,100)
             insert_one(authorname,i)
             print("new tweet inserted: ")
             print("tweeter: "+i["user"]["screen_name"])
-            print("tweets id: "+ i["id_str"])
             print("created at: "+i["created_at"])
 
     return res
